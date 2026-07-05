@@ -15,6 +15,7 @@ const translations = {
     "hero.ctaSecondary": "Start a conversation",
     "hero.photoAlt": "Portrait of Ma Chen",
     "hero.signal": "Open to AI PM and product localization roles",
+    "intro.eyebrow": "Approach",
     "metrics.interviews": "user interviews",
     "metrics.samples": "UGC samples reviewed",
     "metrics.languages": "working languages",
@@ -258,6 +259,7 @@ const translations = {
     "hero.ctaSecondary": "Hablemos",
     "hero.photoAlt": "Retrato de Ma Chen",
     "hero.signal": "Abierta a roles de gestión de producto con IA y localización de producto",
+    "intro.eyebrow": "Enfoque",
     "metrics.interviews": "entrevistas a usuarios",
     "metrics.samples": "muestras UGC evaluadas",
     "metrics.languages": "idiomas de trabajo",
@@ -504,6 +506,7 @@ const translations = {
     "hero.ctaSecondary": "联系我",
     "hero.photoAlt": "马琛的个人照片",
     "hero.signal": "关注 AI PM 与产品本地化机会",
+    "intro.eyebrow": "方法论",
     "metrics.interviews": "用户深访",
     "metrics.samples": "UGC 样本评估",
     "metrics.languages": "工作语言",
@@ -1438,6 +1441,21 @@ Object.assign(translations.zh, {
   "aigc.panelStatus": "营销活动已准备审批"
 });
 
+Object.assign(translations.en, {
+  "adopt.timelineSteps": "assessment steps",
+  "adopt.timelineOutputs": "prioritized outputs"
+});
+
+Object.assign(translations.es, {
+  "adopt.timelineSteps": "pasos de evaluación",
+  "adopt.timelineOutputs": "resultados priorizados"
+});
+
+Object.assign(translations.zh, {
+  "adopt.timelineSteps": "步企业评估",
+  "adopt.timelineOutputs": "项优先建议"
+});
+
 const savedLanguage = (() => {
   try {
     return localStorage.getItem("site-lang");
@@ -1453,6 +1471,7 @@ if (toggle) {
   toggle.querySelectorAll("[data-lang-option]").forEach((button) => {
     button.addEventListener("click", () => {
       setLanguage(button.dataset.langOption);
+      requestAnimationFrame(() => window.ScrollTrigger?.refresh());
     });
   });
 }
@@ -1528,6 +1547,585 @@ if (toggle) {
   }, { threshold: 0.18, rootMargin: "0px 0px -10% 0px" });
 
   targets.forEach((target) => observer.observe(target));
+})();
+
+(function initDarkCraftSample() {
+  const hero = document.querySelector(".hero-cinematic");
+  const project = document.querySelector(".project-cinematic-sample");
+  if (!hero && !project) return;
+
+  if (hero) {
+    const titleVariant = new URLSearchParams(window.location.search).get("title");
+    if (titleVariant === "outline-all") {
+      hero.classList.remove("title-variant-a");
+      hero.classList.add("title-variant-b");
+    }
+  }
+
+  const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const desktop = window.matchMedia("(min-width: 981px)").matches;
+  const finePointer = window.matchMedia("(pointer: fine)").matches;
+  const gsap = window.gsap;
+  const ScrollTrigger = window.ScrollTrigger;
+
+  if (!reduced && desktop && window.Lenis) {
+    try {
+      const lenis = new window.Lenis({
+        duration: 1.05,
+        smoothWheel: true,
+        wheelMultiplier: 0.9,
+        touchMultiplier: 1,
+        syncTouch: false,
+        autoRaf: true
+      });
+
+      if (gsap && ScrollTrigger) {
+        lenis.on("scroll", ScrollTrigger.update);
+      }
+
+      window.addEventListener("load", () => lenis.resize());
+    } catch (error) {
+      /* If Lenis fails to initialize, native scrolling remains fully usable. */
+    }
+  }
+
+  if (!reduced && finePointer) {
+    const cursor = document.querySelector(".craft-cursor");
+    if (cursor) {
+      document.documentElement.classList.add("craft-cursor-ready");
+      const moveX = gsap ? gsap.quickTo(cursor, "x", { duration: 0.28, ease: "power3.out" }) : null;
+      const moveY = gsap ? gsap.quickTo(cursor, "y", { duration: 0.28, ease: "power3.out" }) : null;
+
+      window.addEventListener("pointermove", (event) => {
+        cursor.classList.add("is-visible");
+        if (moveX && moveY) {
+          moveX(event.clientX);
+          moveY(event.clientY);
+        } else {
+          cursor.style.left = `${event.clientX}px`;
+          cursor.style.top = `${event.clientY}px`;
+        }
+      }, { passive: true });
+
+      document.querySelectorAll("a, button").forEach((target) => {
+        target.addEventListener("pointerenter", () => {
+          cursor.classList.add("is-active");
+          if (gsap) gsap.to(cursor, { scale: 1.55, duration: 0.25, ease: "power3.out" });
+        });
+        target.addEventListener("pointerleave", () => {
+          cursor.classList.remove("is-active");
+          if (gsap) gsap.to(cursor, { scale: 1, duration: 0.25, ease: "power3.out" });
+        });
+      });
+
+      document.documentElement.addEventListener("mouseleave", () => cursor.classList.remove("is-visible"));
+    }
+  }
+
+  if (gsap && ScrollTrigger) {
+    gsap.registerPlugin(ScrollTrigger);
+
+    if (hero) {
+      const lines = hero.querySelectorAll(".mask-line > span");
+      const support = [
+        hero.querySelector(".eyebrow"),
+        hero.querySelector(".hero-actions")
+      ].filter(Boolean);
+
+      if (reduced) {
+        gsap.fromTo(
+          [...lines, ...support],
+          { opacity: 0 },
+          { opacity: 1, duration: 0.42, stagger: 0.07, ease: "none" }
+        );
+      } else {
+        gsap.timeline({ defaults: { ease: "power3.out" } })
+          .from(hero.querySelector(".eyebrow"), { opacity: 0, y: 18, duration: 0.55 })
+          .from(lines, { yPercent: 108, duration: 1.05, stagger: 0.14 }, "-=0.2")
+          .from(hero.querySelector(".hero-actions"), { opacity: 0, y: 28, duration: 0.62 }, "-=0.48");
+
+        gsap.to(hero.querySelector(".hero-copy"), {
+          yPercent: 8,
+          ease: "none",
+          scrollTrigger: {
+            trigger: hero,
+            start: "top top",
+            end: "bottom top",
+            scrub: 0.7
+          }
+        });
+      }
+    }
+
+    if (project) {
+      const storyItems = project.querySelectorAll("[data-story-item]");
+      const art = project.querySelector(".cinematic-project-art");
+      const titleLine = project.querySelector(".project-mask-title .mask-line > span");
+
+      if (reduced) {
+        gsap.fromTo(
+          [...storyItems, art].filter(Boolean),
+          { opacity: 0 },
+          { opacity: 1, duration: 0.4, stagger: 0.07, ease: "none" }
+        );
+      } else {
+        gsap.fromTo(
+          storyItems,
+          { opacity: 0, y: 40 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.82,
+            stagger: 0.12,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: project.querySelector(".cinematic-project-copy"),
+              start: "top 72%",
+              once: true
+            }
+          }
+        );
+
+        if (titleLine) {
+          gsap.from(titleLine, {
+            yPercent: 105,
+            duration: 1,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: project.querySelector(".project-mask-title"),
+              start: "top 82%",
+              once: true
+            }
+          });
+        }
+
+        if (art) {
+          gsap.fromTo(
+            art,
+            { opacity: 0, y: 44 },
+            {
+              opacity: 1,
+              y: 0,
+              duration: 0.95,
+              ease: "power3.out",
+              scrollTrigger: {
+                trigger: project,
+                start: "top 72%",
+                once: true
+              }
+            }
+          );
+        }
+
+        if (desktop && art) {
+          ScrollTrigger.create({
+            trigger: project,
+            start: "top top",
+            end: "bottom bottom",
+            pin: art,
+            pinSpacing: false,
+            anticipatePin: 1
+          });
+        }
+      }
+    }
+
+    window.addEventListener("load", () => ScrollTrigger.refresh(), { once: true });
+  }
+
+  if (!reduced && desktop && hero && window.THREE) {
+    const mount = hero.querySelector("[data-dark-hero-scene]");
+    if (!mount) return;
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(34, 1, 0.1, 100);
+    camera.position.set(0, 0, 5.2);
+
+    const renderer = new THREE.WebGLRenderer({
+      alpha: true,
+      antialias: true,
+      powerPreference: "low-power"
+    });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
+    renderer.setClearColor(0x000000, 0);
+    mount.appendChild(renderer.domElement);
+
+    const geometry = new THREE.IcosahedronGeometry(1.38, 1);
+    const material = new THREE.MeshBasicMaterial({
+      color: 0xd98e2b,
+      wireframe: true,
+      transparent: true,
+      opacity: 0.2
+    });
+    const anchor = new THREE.Mesh(geometry, material);
+    anchor.position.set(0.55, 0.08, 0);
+    scene.add(anchor);
+
+    const ringGeometry = new THREE.TorusGeometry(1.86, 0.012, 4, 96);
+    const ringMaterial = new THREE.MeshBasicMaterial({
+      color: 0xe8a23d,
+      transparent: true,
+      opacity: 0.36
+    });
+    const ring = new THREE.Mesh(ringGeometry, ringMaterial);
+    ring.rotation.set(1.08, 0.2, 0.26);
+    ring.position.copy(anchor.position);
+    scene.add(ring);
+
+    const particleCount = 140;
+    const positions = new Float32Array(particleCount * 3);
+    for (let index = 0; index < particleCount; index += 1) {
+      const radius = 2.2 + Math.random() * 2.4;
+      const theta = Math.random() * Math.PI * 2;
+      const phi = Math.acos(2 * Math.random() - 1);
+      positions[index * 3] = radius * Math.sin(phi) * Math.cos(theta);
+      positions[index * 3 + 1] = radius * Math.sin(phi) * Math.sin(theta);
+      positions[index * 3 + 2] = radius * Math.cos(phi);
+    }
+    const particleGeometry = new THREE.BufferGeometry();
+    particleGeometry.setAttribute("position", new THREE.BufferAttribute(positions, 3));
+    const particleMaterial = new THREE.PointsMaterial({
+      color: 0xd98e2b,
+      size: 0.016,
+      transparent: true,
+      opacity: 0.34,
+      blending: THREE.AdditiveBlending,
+      depthWrite: false
+    });
+    const particles = new THREE.Points(particleGeometry, particleMaterial);
+    scene.add(particles);
+
+    const pointer = { x: 0, y: 0 };
+    let sceneVisible = true;
+    let animationFrame = 0;
+
+    const resize = () => {
+      const rect = mount.getBoundingClientRect();
+      if (!rect.width || !rect.height) return;
+      renderer.setSize(rect.width, rect.height, false);
+      camera.aspect = rect.width / rect.height;
+      camera.updateProjectionMatrix();
+    };
+
+    const render = () => {
+      if (sceneVisible) {
+        anchor.rotation.x += (pointer.y * 0.22 - anchor.rotation.x) * 0.035;
+        anchor.rotation.y += 0.0018 + (pointer.x * 0.2 - anchor.rotation.y) * 0.018;
+        ring.rotation.z += 0.0012;
+        particles.rotation.y -= 0.00018;
+        renderer.render(scene, camera);
+      }
+      animationFrame = requestAnimationFrame(render);
+    };
+
+    hero.addEventListener("pointermove", (event) => {
+      const rect = hero.getBoundingClientRect();
+      pointer.x = ((event.clientX - rect.left) / rect.width - 0.5) * 2;
+      pointer.y = ((event.clientY - rect.top) / rect.height - 0.5) * 2;
+    }, { passive: true });
+    hero.addEventListener("pointerleave", () => {
+      pointer.x = 0;
+      pointer.y = 0;
+    });
+
+    const visibilityObserver = new IntersectionObserver(([entry]) => {
+      sceneVisible = entry.isIntersecting;
+    }, { threshold: 0.05 });
+    visibilityObserver.observe(hero);
+
+    const resizeObserver = new ResizeObserver(resize);
+    resizeObserver.observe(mount);
+    resize();
+    render();
+
+    window.addEventListener("pagehide", () => {
+      cancelAnimationFrame(animationFrame);
+      resizeObserver.disconnect();
+      visibilityObserver.disconnect();
+      geometry.dispose();
+      material.dispose();
+      ringGeometry.dispose();
+      ringMaterial.dispose();
+      particleGeometry.dispose();
+      particleMaterial.dispose();
+      renderer.dispose();
+    }, { once: true });
+  }
+})();
+
+(function initIntroPortrait() {
+  const section = document.querySelector(".intro-portrait");
+  if (!section) return;
+
+  const lead = section.querySelector(".intro-mask-lead");
+  const frame = section.querySelector(".intro-portrait-frame");
+  const glow = section.querySelector(".intro-portrait-glow");
+  const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const gsap = window.gsap;
+  const ScrollTrigger = window.ScrollTrigger;
+
+  if (reduced || !gsap || !ScrollTrigger) {
+    if (gsap) {
+      gsap.to([lead, frame, glow].filter(Boolean), { opacity: 1, duration: 0.5, ease: "none" });
+    } else {
+      [lead, frame, glow].forEach((el) => { if (el) el.style.opacity = "1"; });
+    }
+    return;
+  }
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  const timeline = gsap.timeline({
+    scrollTrigger: {
+      trigger: section,
+      start: "top 75%",
+      once: true
+    }
+  });
+
+  if (lead) {
+    timeline.to(lead, { clipPath: "inset(0 0 0% 0)", duration: 1.1, ease: "power3.out" }, 0);
+  }
+  if (frame) {
+    timeline.to(frame, { opacity: 1, scale: 1, duration: 1.15, ease: "power3.out" }, 0.05);
+  }
+  if (glow) {
+    timeline.to(glow, { opacity: 1, duration: 1.3, ease: "power2.out" }, 0.35);
+  }
+})();
+
+(function initProjectSpine() {
+  const timeline = document.querySelector(".project-timeline");
+  if (!timeline) return;
+
+  const svg = timeline.querySelector(".project-spine");
+  const line = timeline.querySelector("[data-project-spine]");
+  const glow = timeline.querySelector("[data-project-spine-glow]");
+  const head = timeline.querySelector("[data-project-spine-head]");
+  const nodeLayer = timeline.querySelector("[data-project-node-layer]");
+  const cards = [...timeline.querySelectorAll(".timeline-project")];
+  if (!svg || !line || !glow || !head || !nodeLayer || !cards.length) return;
+
+  const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const gsap = window.gsap;
+  const ScrollTrigger = window.ScrollTrigger;
+  const svgNamespace = "http://www.w3.org/2000/svg";
+  let pathPoints = [];
+  let lineLength = 0;
+  let lineTween = null;
+  let lineTrigger = null;
+  let resizeFrame = 0;
+  const countedCards = new WeakSet();
+
+  const curveThrough = (points) => {
+    if (points.length < 2) return "";
+    let path = `M ${points[0].x} ${points[0].y}`;
+    for (let index = 0; index < points.length - 1; index += 1) {
+      const previous = points[index - 1] || points[index];
+      const current = points[index];
+      const next = points[index + 1];
+      const after = points[index + 2] || next;
+      const controlOne = {
+        x: current.x + (next.x - previous.x) / 6,
+        y: current.y + (next.y - previous.y) / 6
+      };
+      const controlTwo = {
+        x: next.x - (after.x - current.x) / 6,
+        y: next.y - (after.y - current.y) / 6
+      };
+      path += ` C ${controlOne.x} ${controlOne.y}, ${controlTwo.x} ${controlTwo.y}, ${next.x} ${next.y}`;
+    }
+    return path;
+  };
+
+  const updateHead = (progress) => {
+    if (!lineLength || reduced) return;
+    const point = line.getPointAtLength(Math.max(0, Math.min(lineLength, lineLength * progress)));
+    head.setAttribute("cx", point.x);
+    head.setAttribute("cy", point.y);
+  };
+
+  const buildPath = () => {
+    const width = timeline.clientWidth;
+    const height = timeline.scrollHeight;
+    const mobile = window.matchMedia("(max-width: 980px)").matches;
+    const startX = mobile ? 25 : width * 0.5;
+
+    pathPoints = [{ x: startX, y: 0 }];
+    cards.forEach((card) => {
+      const side = card.dataset.projectSide;
+      const x = mobile
+        ? side === "right" ? 31 : 19
+        : side === "right"
+          ? Math.min(width - 18, card.offsetLeft + card.offsetWidth - 2)
+          : Math.max(18, card.offsetLeft + 2);
+      pathPoints.push({
+        x,
+        y: card.offsetTop + card.offsetHeight * 0.5
+      });
+    });
+    pathPoints.push({ x: mobile ? 25 : width * 0.5, y: height });
+
+    svg.setAttribute("viewBox", `0 0 ${width} ${height}`);
+    svg.setAttribute("width", width);
+    svg.setAttribute("height", height);
+
+    const pathData = curveThrough(pathPoints);
+    line.setAttribute("d", pathData);
+    glow.setAttribute("d", pathData);
+    lineLength = line.getTotalLength();
+
+    nodeLayer.replaceChildren();
+    pathPoints.slice(1, -1).forEach((point, index) => {
+      const node = document.createElementNS(svgNamespace, "circle");
+      node.setAttribute("cx", point.x);
+      node.setAttribute("cy", point.y);
+      node.setAttribute("r", mobile ? "5" : "7");
+      node.classList.add("project-spine-node");
+      node.dataset.nodeIndex = index;
+      nodeLayer.appendChild(node);
+    });
+
+    if (lineTrigger) lineTrigger.kill();
+    if (lineTween) lineTween.kill();
+
+    if (reduced || !gsap || !ScrollTrigger) {
+      line.style.strokeDasharray = "none";
+      line.style.strokeDashoffset = "0";
+      glow.style.strokeDasharray = "none";
+      glow.style.strokeDashoffset = "0";
+      return;
+    }
+
+    gsap.set([line, glow], {
+      strokeDasharray: lineLength,
+      strokeDashoffset: lineLength
+    });
+    updateHead(0);
+
+    lineTween = gsap.to([line, glow], {
+      strokeDashoffset: 0,
+      ease: "none",
+      paused: true
+    });
+
+    lineTrigger = ScrollTrigger.create({
+      trigger: timeline,
+      start: "top 72%",
+      end: "bottom 72%",
+      animation: lineTween,
+      scrub: 0.45,
+      onUpdate: (self) => updateHead(self.progress)
+    });
+  };
+
+  const setNodeState = (index, active) => {
+    const node = nodeLayer.querySelector(`[data-node-index="${index}"]`);
+    if (node) node.classList.toggle("is-active", active);
+  };
+
+  const animateCounters = (card) => {
+    const counters = card.querySelectorAll("[data-count-to]");
+    if (!counters.length || countedCards.has(card)) return;
+    countedCards.add(card);
+
+    counters.forEach((counter) => {
+      const target = Number(counter.dataset.countTo || 0);
+      if (reduced || !gsap) {
+        counter.textContent = String(target);
+        return;
+      }
+
+      const state = { value: 0 };
+      gsap.to(state, {
+        value: target,
+        duration: 1.25,
+        ease: "power3.out",
+        snap: { value: 1 },
+        onUpdate: () => {
+          counter.textContent = String(Math.round(state.value));
+        }
+      });
+    });
+  };
+
+  if (reduced || !gsap || !ScrollTrigger) {
+    cards.forEach((card) => {
+      card.classList.add("is-current");
+      animateCounters(card);
+    });
+    requestAnimationFrame(buildPath);
+    return;
+  }
+
+  document.documentElement.classList.add("timeline-enhanced");
+  gsap.registerPlugin(ScrollTrigger);
+
+  cards.forEach((card, index) => {
+    const mobile = window.matchMedia("(max-width: 980px)").matches;
+    const direction = mobile ? 0 : card.dataset.projectSide === "right" ? 92 : -92;
+    const titleLine = card.querySelector(".project-mask-title .mask-line > span");
+
+    gsap.fromTo(
+      card,
+      { opacity: 0, x: direction, y: 42 },
+      {
+        opacity: 1,
+        x: 0,
+        y: 0,
+        duration: 0.95,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: card,
+          start: "top 78%",
+          once: true
+        }
+      }
+    );
+
+    if (titleLine) {
+      gsap.from(titleLine, {
+        yPercent: 108,
+        duration: 0.95,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: card,
+          start: "top 74%",
+          once: true
+        }
+      });
+    }
+
+    ScrollTrigger.create({
+      trigger: card,
+      start: "top 68%",
+      end: "bottom 32%",
+      onToggle: (self) => {
+        card.classList.toggle("is-current", self.isActive);
+        setNodeState(index, self.isActive);
+        gsap.to(card, {
+          opacity: self.isActive ? 1 : 0.42,
+          duration: 0.55,
+          ease: "power2.out",
+          overwrite: "auto"
+        });
+        if (self.isActive) animateCounters(card);
+      }
+    });
+  });
+
+  const scheduleBuild = () => {
+    cancelAnimationFrame(resizeFrame);
+    resizeFrame = requestAnimationFrame(() => {
+      buildPath();
+      ScrollTrigger.refresh();
+    });
+  };
+
+  const timelineResizeObserver = new ResizeObserver(scheduleBuild);
+  timelineResizeObserver.observe(timeline);
+  window.addEventListener("load", scheduleBuild, { once: true });
+  requestAnimationFrame(buildPath);
 })();
 
 class InsightGenerator {

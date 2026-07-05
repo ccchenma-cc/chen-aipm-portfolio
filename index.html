@@ -15,15 +15,15 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Noto+Sans+SC:wght@300;400;500;600;700;800;900&family=Noto+Serif+SC:wght@500;700;900&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="styles.css?v=20260614-4" />
+    <link rel="stylesheet" href="styles.css?v=20260705-1" />
   </head>
   <body>
+    <div class="craft-cursor" aria-hidden="true"><span></span></div>
     <div class="grain" aria-hidden="true"></div>
     <div class="cursor-field" aria-hidden="true"></div>
 
     <header class="site-header">
       <a class="brand" href="#top" aria-label="Back to top">
-        <span class="brand-mark"></span>
         <span>Ma Chen</span>
       </a>
       <nav aria-label="Primary navigation">
@@ -41,51 +41,43 @@
     </header>
 
     <main id="top">
-      <section class="hero">
+      <section class="hero hero-cinematic title-variant-a">
+        <div class="hero-webgl" data-dark-hero-scene aria-hidden="true"></div>
+        <div class="hero-vignette" aria-hidden="true"></div>
         <div class="hero-orbit" aria-hidden="true">
           <span></span>
           <span></span>
           <span></span>
         </div>
         <div class="section-inner hero-grid">
-          <div class="hero-copy reveal">
+          <div class="hero-copy">
             <p class="eyebrow" data-i18n="hero.eyebrow">AI product manager · multilingual systems · crafted interfaces</p>
-            <h1>
-              <span data-i18n="hero.titleA">Designing AI products</span>
-              <span data-i18n="hero.titleB">that feel local, useful, and alive.</span>
+            <h1 class="hero-mask-title">
+              <span class="mask-line"><span data-i18n="hero.titleA">Designing AI products</span></span>
+              <span class="mask-line"><span data-i18n="hero.titleB">that feel local, useful, and alive.</span></span>
             </h1>
-            <p class="hero-lead" data-i18n="hero.lead">
-              I connect user research, language strategy, prompt systems, and front-end storytelling to turn complex AI workflows into polished product experiences.
-            </p>
             <div class="hero-actions">
               <a class="button button-primary" href="#projects" data-i18n="hero.ctaPrimary">Explore projects</a>
               <a class="button button-secondary" href="mailto:ccchenma@gmail.com" data-i18n="hero.ctaSecondary">Start a conversation</a>
             </div>
           </div>
+        </div>
+      </section>
 
-          <aside class="hero-panel reveal" aria-label="Profile summary">
-            <div class="portrait-card">
+      <section id="intro" class="intro-portrait section-inner">
+        <div class="intro-portrait-grid">
+          <div class="intro-portrait-copy">
+            <p class="eyebrow" data-i18n="intro.eyebrow">Approach</p>
+            <p class="intro-mask-lead" data-i18n="hero.lead">
+              I connect user research, language strategy, prompt systems, and front-end storytelling to turn complex AI workflows into polished product experiences.
+            </p>
+          </div>
+          <div class="intro-portrait-art" aria-hidden="false">
+            <div class="intro-portrait-glow"></div>
+            <div class="intro-portrait-frame">
               <img src="assets/profile.jpg" alt="Portrait of Ma Chen" data-i18n-attr="alt:hero.photoAlt" />
             </div>
-            <div class="signal-card">
-              <span class="signal-dot"></span>
-              <span data-i18n="hero.signal">Open to AI PM and product localization roles</span>
-            </div>
-            <div class="mini-metrics">
-              <div>
-                <strong>30+</strong>
-                <span data-i18n="metrics.interviews">user interviews</span>
-              </div>
-              <div>
-                <strong>12K+</strong>
-                <span data-i18n="metrics.samples">UGC samples reviewed</span>
-              </div>
-              <div>
-                <strong>3</strong>
-                <span data-i18n="metrics.languages">working languages</span>
-              </div>
-            </div>
-          </aside>
+          </div>
         </div>
       </section>
 
@@ -116,45 +108,69 @@
           </p>
         </div>
 
-        <article class="project-chapter project-adoptai">
-          <div class="project-art" aria-hidden="true">
-            <div class="adoptai-form-stage">
-              <span class="adoptai-shape shape-sun"></span>
-              <span class="adoptai-shape shape-coral"></span>
-              <div class="adoptai-form">
-                <div class="adoptai-form-meta"><span>AdoptAI</span><span data-i18n="adopt.formProgress">1 of 7</span></div>
-                <span class="adoptai-step">01 →</span>
-                <strong data-i18n="adopt.formQuestion">What industry does your company operate in?</strong>
-                <p data-i18n="adopt.formHelp">This helps us tailor opportunities to your sector.</p>
-                <div class="adoptai-option is-selected"><i>✓</i><span data-i18n="adopt.formOption1">Technology</span></div>
-                <div class="adoptai-option"><i>2</i><span data-i18n="adopt.formOption2">Financial services</span></div>
-                <div class="adoptai-option"><i>3</i><span data-i18n="adopt.formOption3">Healthcare</span></div>
-                <button type="button"><span data-i18n="adopt.formContinue">Continue</span>&nbsp; →</button>
+        <div class="project-timeline">
+          <svg class="project-spine" aria-hidden="true">
+            <defs>
+              <filter id="project-line-glow" x="-80%" y="-80%" width="260%" height="260%">
+                <feGaussianBlur stdDeviation="5" result="blur"></feGaussianBlur>
+                <feMerge><feMergeNode in="blur"></feMergeNode><feMergeNode in="SourceGraphic"></feMergeNode></feMerge>
+              </filter>
+            </defs>
+            <path class="project-spine-glow" data-project-spine-glow></path>
+            <path class="project-spine-line" data-project-spine></path>
+            <g data-project-node-layer></g>
+            <circle class="project-spine-head" data-project-spine-head r="7"></circle>
+          </svg>
+
+        <article class="project-chapter project-adoptai timeline-project" data-project-side="right" data-project-id="adoptai">
+          <div class="section-inner cinematic-project-layout">
+            <div class="project-content cinematic-project-copy">
+              <div class="project-kicker" data-story-item>
+                <span>/ 01</span>
+                <span data-i18n="project4.kicker">AI opportunity intelligence · AdoptAI</span>
+              </div>
+              <h3 class="project-mask-title" data-story-item>
+                <span class="mask-line"><span data-i18n="project4.title">AdoptAI</span></span>
+              </h3>
+              <p class="project-lead" data-i18n="project4.lead" data-story-item>
+                A decision-support product that turns company context into prioritized AI opportunities, ROI projections, and an actionable first recommendation.
+              </p>
+              <div class="timeline-stat-sample" data-story-item>
+                <div><strong data-count-to="7">0</strong><span data-i18n="adopt.timelineSteps">assessment steps</span></div>
+                <div><strong data-count-to="3">0</strong><span data-i18n="adopt.timelineOutputs">prioritized outputs</span></div>
+              </div>
+              <div class="feature-list" data-story-item>
+                <span data-i18n="project4.f1">Guided business assessment</span>
+                <span data-i18n="project4.f2">Value-feasibility prioritization</span>
+                <span data-i18n="project4.f3">Interactive ROI simulation</span>
+              </div>
+              <div class="project-actions" data-story-item>
+                <a class="button button-primary" href="adoptai.html" data-i18n="project.detail">View how it was made</a>
+                <a class="button button-secondary" href="https://ai-adopt.github.io/" target="_blank" rel="noreferrer" data-i18n="project.live">Open live project</a>
               </div>
             </div>
-          </div>
-          <div class="section-inner project-content reveal">
-            <div class="project-kicker">
-              <span>/ 01</span>
-              <span data-i18n="project4.kicker">AI opportunity intelligence · AdoptAI</span>
-            </div>
-            <h3 data-i18n="project4.title">AdoptAI</h3>
-            <p class="project-lead" data-i18n="project4.lead">
-              A decision-support product that turns company context into prioritized AI opportunities, ROI projections, and an actionable first recommendation.
-            </p>
-            <div class="feature-list">
-              <span data-i18n="project4.f1">Guided business assessment</span>
-              <span data-i18n="project4.f2">Value-feasibility prioritization</span>
-              <span data-i18n="project4.f3">Interactive ROI simulation</span>
-            </div>
-            <div class="project-actions">
-              <a class="button button-primary" href="adoptai.html" data-i18n="project.detail">View how it was made</a>
-              <a class="button button-secondary" href="https://ai-adopt.github.io/" target="_blank" rel="noreferrer" data-i18n="project.live">Open live project</a>
+
+            <div class="project-art cinematic-project-art" aria-hidden="true">
+              <div class="cinematic-frame-index"><span>01</span><i></i><span>AI / ROI</span></div>
+              <div class="adoptai-form-stage">
+                <span class="adoptai-shape shape-sun"></span>
+                <span class="adoptai-shape shape-coral"></span>
+                <div class="adoptai-form">
+                  <div class="adoptai-form-meta"><span>AdoptAI</span><span data-i18n="adopt.formProgress">1 of 7</span></div>
+                  <span class="adoptai-step">01 →</span>
+                  <strong data-i18n="adopt.formQuestion">What industry does your company operate in?</strong>
+                  <p data-i18n="adopt.formHelp">This helps us tailor opportunities to your sector.</p>
+                  <div class="adoptai-option is-selected"><i>✓</i><span data-i18n="adopt.formOption1">Technology</span></div>
+                  <div class="adoptai-option"><i>2</i><span data-i18n="adopt.formOption2">Financial services</span></div>
+                  <div class="adoptai-option"><i>3</i><span data-i18n="adopt.formOption3">Healthcare</span></div>
+                  <button type="button"><span data-i18n="adopt.formContinue">Continue</span>&nbsp; →</button>
+                </div>
+              </div>
             </div>
           </div>
         </article>
 
-        <article class="project-chapter project-aigc">
+        <article class="project-chapter project-aigc timeline-project" data-project-side="left" data-project-id="aigc">
           <div class="project-art" aria-hidden="true">
             <div class="aigc-flow-visual">
               <div class="aigc-flow-header"><span>LIVE WORKFLOW</span><b>22 NODES</b></div>
@@ -176,12 +192,12 @@
               </div>
             </div>
           </div>
-          <div class="section-inner project-content reveal">
+          <div class="section-inner project-content">
             <div class="project-kicker">
               <span>/ 02</span>
               <span data-i18n="project6.kicker">AI agent design · Automation · Localization</span>
             </div>
-            <h3 data-i18n="project6.title">AIGC Multi-Agent Marketing Workflow</h3>
+            <h3 class="project-mask-title"><span class="mask-line"><span data-i18n="project6.title">AIGC Multi-Agent Marketing Workflow</span></span></h3>
             <p class="project-lead" data-i18n="project6.lead">
               A multi-agent marketing system that turns a product brief into publish-ready copy, automatically reviewed, scored, localized, and stored.
             </p>
@@ -196,7 +212,7 @@
           </div>
         </article>
 
-        <article class="project-chapter project-macro">
+        <article class="project-chapter project-macro timeline-project" data-project-side="right" data-project-id="macro">
           <div class="project-art" aria-hidden="true">
             <div class="macro-globe-stage">
               <div class="macro-globe" data-globe-scene></div>
@@ -213,12 +229,12 @@
               </div>
             </div>
           </div>
-          <div class="section-inner project-content reveal">
+          <div class="section-inner project-content">
             <div class="project-kicker">
               <span>/ 03</span>
               <span data-i18n="project5.kicker">Co-created data product · Macroeconomic intelligence</span>
             </div>
-            <h3 data-i18n="project5.title">Macroeconomic Dashboard</h3>
+            <h3 class="project-mask-title"><span class="mask-line"><span data-i18n="project5.title">Macroeconomic Dashboard</span></span></h3>
             <p class="project-lead" data-i18n="project5.lead">
               A global intelligence workspace for exploring indicators, comparing countries, tracking markets, and turning complex time series into readable economic signals.
             </p>
@@ -234,7 +250,7 @@
           </div>
         </article>
 
-        <article class="project-chapter project-lumi">
+        <article class="project-chapter project-lumi timeline-project" data-project-side="left" data-project-id="lumi">
           <div class="project-art" aria-hidden="true">
             <div class="planet-stage">
               <span class="planet"></span>
@@ -245,12 +261,12 @@
               <span class="pixel-star s3"></span>
             </div>
           </div>
-          <div class="section-inner project-content reveal">
+          <div class="section-inner project-content">
             <div class="project-kicker">
               <span>/ 04</span>
               <span data-i18n="project2.kicker">AI-native creative experiment · Lumi Galaxy</span>
             </div>
-            <h3 data-i18n="project2.title">Lumi Galaxy</h3>
+            <h3 class="project-mask-title"><span class="mask-line"><span data-i18n="project2.title">Lumi Galaxy</span></span></h3>
             <p class="project-lead" data-i18n="project2.lead">
               A pixel-alien desktop-pet universe with character lore, a visual planet, and an indie product loop powered by AI-assisted production.
             </p>
@@ -266,7 +282,7 @@
           </div>
         </article>
 
-        <article class="project-chapter project-mbti">
+        <article class="project-chapter project-mbti timeline-project" data-project-side="right" data-project-id="mbti">
           <div class="project-art" aria-hidden="true">
             <div class="type-grid">
               <span>INFP</span><span>ENTJ</span><span>ISFJ</span><span>ENTP</span>
@@ -274,12 +290,12 @@
               <span>ENFJ</span><span>ESTJ</span><span>ISFP</span><span>ENTP</span>
             </div>
           </div>
-          <div class="section-inner project-content reveal">
+          <div class="section-inner project-content">
             <div class="project-kicker">
               <span>/ 05</span>
               <span data-i18n="project1.kicker">Community product · MBTI discussion</span>
             </div>
-            <h3 data-i18n="project1.title">MBTI Discussion</h3>
+            <h3 class="project-mask-title"><span class="mask-line"><span data-i18n="project1.title">MBTI Discussion</span></span></h3>
             <p class="project-lead" data-i18n="project1.lead">
               A personality-type discussion experience designed around expressive identity, structured debate, and lightweight community participation.
             </p>
@@ -294,6 +310,7 @@
             </div>
           </div>
         </article>
+        </div>
       </section>
 
       <section id="experience" class="experience section-inner">
@@ -357,6 +374,9 @@
     </main>
 
     <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
-    <script src="script.js?v=20260614-4"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.20/dist/lenis.min.js"></script>
+    <script src="script.js?v=20260705-1"></script>
   </body>
 </html>
